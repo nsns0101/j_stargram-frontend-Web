@@ -5,7 +5,7 @@ import { gql } from "apollo-boost";
 import { useQuery } from "react-apollo-hooks";
 import Footer from "./Navigation/Footer";
 import Theme from "../Styles/Theme";
-import AppRouter from "./Router";
+import Routes from "./Router";
 
 //apolloClient에서 isLoggedIn을 불러옴
 const QUERY = gql`
@@ -30,7 +30,7 @@ export default () => {
     <ThemeProvider theme={Theme}>
       <Wrapper>
         <GlobalStyles />
-        <AppRouter isLoggedIn={isLoggedIn} />
+        <Routes isLoggedIn={isLoggedIn} />
         {/* Footer */}
         <Footer />
       </Wrapper>
