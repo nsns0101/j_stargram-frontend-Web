@@ -1,3 +1,4 @@
+//테마
 const BOX_BORDER = "1px solid #e6e6e6";
 const BORDER_RADIUS = "4px";
 
