@@ -1,13 +1,12 @@
-//로그인
-import React, { useState } from "react";
+//로그인 폼
+import React from "react";
 import styled from "styled-components";
-import Input from "../Components/Input";
-import Button from "../Components/Button";
-import useInput from "../Hooks/useInput";
+import Input from "../../Components/Input";
+import Button from "../../Components/Button";
 
 //auth전체를 감싸는 것
 const Wrapper = styled.div`
-  height: 80vh;
+  min-height: 80vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -54,23 +53,26 @@ const Form = styled(Box)`
   }
 `;
 
-export default () => {
-  const [action, setAction] = useState("login");
-  const username = useInput(""); //닉네임
-  const password = useInput(""); //비밀번호
-  const firstName = useInput(""); //성
-  const lastName = useInput(""); //이름
-  const email = useInput(""); //이메일
+//AuthContainer에서 넘겨준 값들을 받아서
+export default ({
+  action,
+  setAction,
+  username,
+  firstName,
+  lastName,
+  email,
+  onLogin
+}) => {
+  //
   return (
     <Wrapper>
       {/* 회원가입, 로그인 폼 */}
       <Form>
         {/* 현재 로그인 폼이면 */}
         {action === "logIn" ? (
-          <form>
-            {/* Input함수에 placeholder값과 여러 값들을 넣어서 함수실행 (Input.js 참고) */}
-            <Input placeholder={"Username"} {...username} />
-            <Input placeholder={"Password"} {...password} type="password" />
+          <form onSubmit={onLogin}>
+            {/* Input함수에 placeholder값 + 여러 값들을 넣어서 함수실행 (Input.js 참고) */}
+            <Input placeholder={"Email"} {...email} type="email" />
             <Button text={"Log in"} />
           </form>
         ) : (
@@ -81,7 +83,6 @@ export default () => {
             <Input placeholder={"Last name"} {...lastName} />
             <Input placeholder={"Email"} {...email} type="email" />
             <Input placeholder={"Username"} {...username} />
-            <Input placeholder={"Password"} {...password} type="password" />
             <Button text={"Sign up"} />
           </form>
         )}

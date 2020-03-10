@@ -2,7 +2,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { HashRouter as Router, Route, Switch } from "react-router-dom";
-import Auth from "../Routes/Auth";
+import Auth from "../Routes/Auth/index.js";
 import Feed from "../Routes/Feed";
 
 //로그인 상태의 홈
