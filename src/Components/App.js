@@ -10,7 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Header from "./Navigation/Header";
 import Footer from "./Navigation/Footer";
 import Theme from "../Styles/Theme";
-import Routes from "./Router";
+import Routes from "./Routes";
 
 //apolloClient에서 isLoggedIn을 불러옴
 const QUERY = gql`
