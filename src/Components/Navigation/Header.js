@@ -1,9 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { Link, withRouter } from "react-router-dom";
+import { gql } from "apollo-boost";
 import Input from "../Input";
 import useInput from "../../Hooks/useInput";
 import { Compass, HeartEmpty, User, Logo } from "../Icons";
+import { useQuery } from "react-apollo-hooks";
 
 const Header = styled.header`
   width: 100%;
@@ -60,6 +62,15 @@ const HeaderLink = styled(Link)`
   }
 `;
 
+//내정보 보기 쿼리
+const SEE_MY_PROFILE = gql`
+  {
+    seeMyProfile {
+      username
+    }
+  }
+`;
+
 //withRouter는 render props : { match, location, history } 와 같은 props로써 경로가 변경 될 때마다 해당 구성 요소를 다시 렌더링합니다
 // export default withRouter(props => {
 //   console.log(props); //props에는 history, location, match가 있음
@@ -68,7 +79,12 @@ const HeaderLink = styled(Link)`
 // 그 중 history는 경로와 상관있는듯?
 export default withRouter(({ history }) => {
   const search = useInput("");
-
+  const { data, loading } = useQuery(SEE_MY_PROFILE);
+  //loading때문에 data를 바로 받는 것이 undefined가 되는 것인가?
+  //데이터를 받아오기 전에 화면이 렌더링되서 그런 것인지는 모르겠는데 loading상태일 때는 데이터가 undefined가 되니 조심!
+  if (loading) return "";
+  // console.log(data);
+  const { seeMyProfile } = data;
   //Search함수
   const onSearchSubmit = e => {
     e.preventDefault();
@@ -101,9 +117,17 @@ export default withRouter(({ history }) => {
             <HeartEmpty />
           </HeaderLink>
           {/* 내정보 */}
-          <HeaderLink to="/username">
-            <User />
-          </HeaderLink>
+          {seeMyProfile ? (
+            // 로그인 중이면 seeMyProfile이 있을 것이니  링크를 /:username형식으로 변경
+            <HeaderLink to={seeMyProfile.username}>
+              <User />
+            </HeaderLink>
+          ) : (
+            //로그아웃 중에 내정보를 눌렀을 때
+            <HeaderLink to="/#">
+              <User />
+            </HeaderLink>
+          )}
         </HeaderColumn>
       </HeaderWrapper>
     </Header>
