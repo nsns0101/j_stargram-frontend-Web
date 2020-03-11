@@ -61,23 +61,25 @@ export default ({
   firstName,
   lastName,
   email,
-  onLogin
+  secret,
+  onSubmit
 }) => {
   //
   return (
     <Wrapper>
-      {/* 회원가입, 로그인 폼 */}
       <Form>
         {/* 현재 로그인 폼이면 */}
-        {action === "logIn" ? (
-          <form onSubmit={onLogin}>
+        {action === "login" && (
+          <form onSubmit={onSubmit}>
             {/* Input함수에 placeholder값 + 여러 값들을 넣어서 함수실행 (Input.js 참고) */}
             <Input placeholder={"Email"} {...email} type="email" />
             <Button text={"Log in"} />
           </form>
-        ) : (
-          // 현재 회원가입 폼이면(밑의 상태체인저 참고)
-          <form>
+        )}
+
+        {/* 현재 회원가입 폼이면(밑의 상태체인저 참고) */}
+        {action === "signUp" && (
+          <form onSubmit={onSubmit}>
             {/* Input함수에 placeholder값 넣어서 함수실행 (Input.js 참고) */}
             <Input placeholder={"First name"} {...firstName} />
             <Input placeholder={"Last name"} {...lastName} />
@@ -86,18 +88,27 @@ export default ({
             <Button text={"Sign up"} />
           </form>
         )}
+
+        {/* 로그인 성공했으면  */}
+        {action === "confirm" && (
+          //이메일로 보내진 secret값을 입력하는 창이 만들어짐
+          <form onSubmit={onSubmit}>
+            <Input placeholder="Paste your secret" required {...secret} />
+            <Button text={"Confirm"} />
+          </form>
+        )}
       </Form>
       <StateChanger>
         {/* 로그인 페이지면 */}
-        {action === "logIn" ? (
+        {action === "login" ? (
           <>
             Don't have an account? {/* 링크 클릭시 SignUp Form으로 */}
             <Link onClick={() => setAction("signUp")}>Sign up</Link>
           </>
         ) : (
           <>
-            Have an account? {/* 링크 클릭시 Login Form으로 */}
-            <Link onClick={() => setAction("logIn")}>Log in</Link>
+            Have an account? {/* 링크 클릭시 login Form으로 */}
+            <Link onClick={() => setAction("login")}>Log in</Link>
           </>
         )}
       </StateChanger>
