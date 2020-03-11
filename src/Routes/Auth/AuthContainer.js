@@ -3,7 +3,12 @@ import React, { useState } from "react";
 import AuthPresenter from "./AuthPresenter";
 import useInput from "../../Hooks/useInput";
 import { useMutation } from "react-apollo-hooks";
-import { LOG_IN, CREATE_ACCOUNT } from "./AuthQueries";
+import {
+  LOG_IN,
+  CREATE_ACCOUNT,
+  CONFIRM_SECRET,
+  LOCAL_LOG_IN
+} from "./AuthQueries";
 import { toast } from "react-toastify";
 
 export default () => {
@@ -33,11 +38,21 @@ export default () => {
     }
   });
 
-  //입력 Form을 제출하는 함수
+  //입력한 confirm코드가 맞는지 판단 + 토큰 문자열 생성
+  const [confirmSecretMutation] = useMutation(CONFIRM_SECRET, {
+    variables: {
+      email: email.value,
+      secret: secret.value
+    }
+  });
+  //토큰 문자열을 실제 토큰으로 생성 및 로그인
+  const [localLogInMutation] = useMutation(LOCAL_LOG_IN);
+
+  //입력 Form을 제출하는 함수(이 함수는 버튼을 눌렀을 때 실행)
   const onSubmit = async e => {
     console.log(action);
     e.preventDefault();
-    //로그인 버튼을 클릭하였을 때
+    //로그인 창이면
     if (action === "login") {
       //이메일이 입력되어 있으면
       if (email.value !== "") {
@@ -66,7 +81,7 @@ export default () => {
         toast.error("Email is required");
       }
     }
-    //회원가입 버튼을 클릭하였을 때
+    //회원가입 창이면
     else if (action === "signUp") {
       //모든 입력값에 입력을 하였을 때
       if (
@@ -101,6 +116,26 @@ export default () => {
         toast.error("All field are required");
       }
     }
+    //confirm 코드 입력 창이면
+    else if (action === "confirm") {
+      //confirm 코드를 입력한 경우
+      if (secret.value !== "") {
+        try {
+          const {
+            data: { confirmSecret: token }
+          } = await confirmSecretMutation();
+          //토큰 문자열이 있으면
+          if (token !== "" && token !== undefined) {
+            //로컬 로그인 실행(보낸 토큰문자열로 localLogInMutation에서 진짜 토큰으로 만들어줌)
+            localLogInMutation({ variables: { token } });
+          } else {
+            throw Error("토큰 문자열이 왜 없지?");
+          }
+        } catch {
+          toast.error("Cant confirm secret,check again");
+        }
+      }
+    }
   };
 
   return (
@@ -116,17 +151,3 @@ export default () => {
     />
   );
 };
-
-// //LOG_IN을 실행하고 난 값이 data에 담기는 듯
-//   //LOG_IN은 AuthQueries.js에서 requestSecret니까 그 리턴 값(Boolean)이 data에 담김
-//   update: (_, { data }) => {
-//     // console.log(data);
-//     const { requestSecret } = data;
-//     //요청한 이메일이 DB에 없을 때
-//     if (!requestSecret) {
-//       //계정이 없으면 생성하라는 오류 창 생성
-//       toast.error("You dont have an account yet, create one");
-//       //3초 후 회원가입 폼으로 이동
-//       setTimeout(() => setAction("signUp"), 3000);
-//     }
-//   },

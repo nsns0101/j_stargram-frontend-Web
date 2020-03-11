@@ -98,20 +98,23 @@ export default ({
           </form>
         )}
       </Form>
-      <StateChanger>
-        {/* 로그인 페이지면 */}
-        {action === "login" ? (
-          <>
-            Don't have an account? {/* 링크 클릭시 SignUp Form으로 */}
-            <Link onClick={() => setAction("signUp")}>Sign up</Link>
-          </>
-        ) : (
-          <>
-            Have an account? {/* 링크 클릭시 login Form으로 */}
-            <Link onClick={() => setAction("login")}>Log in</Link>
-          </>
-        )}
-      </StateChanger>
+      {/* confirm입력 창이 아니고 */}
+      {action !== "confirm" && (
+        <StateChanger>
+          {/* 로그인 페이지면 */}
+          {action === "login" ? (
+            <>
+              Don't have an account? {/* 링크 클릭시 SignUp Form으로 */}
+              <Link onClick={() => setAction("signUp")}>Sign up</Link>
+            </>
+          ) : (
+            <>
+              Have an account? {/* 링크 클릭시 login Form으로 */}
+              <Link onClick={() => setAction("login")}>Log in</Link>
+            </>
+          )}
+        </StateChanger>
+      )}
     </Wrapper>
   );
 };
