@@ -20,7 +20,8 @@ const Input = ({
   required = true, //반드시 입력되어야하는지를 묻는 값( ex - 주소는 반드시 입력되어야합니다.(유효성 검사))
   value, //입력 값
   onChange, //변화가 일어나면 실행할 것들(즉, 입력해서 값이 바뀌면 실행)
-  type = "text" //입력 값의 유효성검사
+  type = "text", //입력 값의 유효성검사
+  className
 }) => (
   <Container
     placeholder={placeholder}
@@ -28,6 +29,7 @@ const Input = ({
     value={value}
     onChange={onChange}
     type={type}
+    className={className}
   />
 );
 

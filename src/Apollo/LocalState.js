@@ -6,7 +6,7 @@ export const resolvers = {
   Mutation: {
     //로그인
     logUserIn: (_, { token }, { cache }) => {
-      localStorage.setItem("token", token); //토큰생성
+      localStorage.setItem("token", token); //받은 토큰 값으로 토큰생성
       cache.writeData({
         data: {
           isLoggedIn: true
