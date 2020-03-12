@@ -37,7 +37,8 @@ export default () => {
         <GlobalStyles />
         <HashRouter>
           <>
-            <Header />
+            {/* 로그인해야 헤더가 보이게 */}
+            {isLoggedIn && <Header />}
             <Wrapper>
               <Routes isLoggedIn={isLoggedIn} />
               <Footer />

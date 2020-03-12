@@ -12,3 +12,5 @@
 - yarn add react-helmet
 - yarn add styled-reset
 - yarn add react-toastify
+- yarn add rl-react-helmet
+- yarn add react-autosize-textarea

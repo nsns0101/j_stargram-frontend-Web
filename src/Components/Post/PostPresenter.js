@@ -1,6 +1,7 @@
 //게시글
 import React from "react";
 import styled from "styled-components";
+import TextareaAutosize from "react-autosize-textarea"; //다음줄로 넘어가면 textarea는 스크롤이 생기지만 이 것은 창이 커짐
 import FatText from "../FatText";
 import Avatar from "../Avatar";
 import { HeartFull, HeartEmpty, Comment } from "../Icons";
@@ -28,10 +29,26 @@ const Location = styled.span`
   font-size: 12px;
 `;
 
-const Files = styled.div``;
+const Files = styled.div`
+  position: relative;
+  padding-bottom: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex-shrink: 0;
+`;
 
-const File = styled.img`
+const File = styled.div`
   max-width: 100%;
+  width: 100%;
+  height: 600px;
+  position: absolute;
+  top: 0;
+  background-image: url(${props => props.src});
+  background-size: cover;
+  background-position: center;
+  opacity: ${props => (props.showing ? 1 : 0)};
+  transition: opacity 0.5s linear;
 `;
 
 const Button = styled.span`
@@ -62,12 +79,24 @@ const Timestamp = styled.span`
   border-bottom: ${props => props.theme.lightGreyColor} 1px solid;
 `;
 
+const Textarea = styled(TextareaAutosize)`
+  border: none;
+  width: 100%;
+  resize: none;
+  font-size: 14px;
+  &:focus {
+    outline: none;
+  }
+`;
+
 export default ({
   user: { username, avatar },
   location,
   files,
   isLiked,
   likeCount,
+  newComment,
+  currentItem,
   createdAt
 }) => (
   <Post>
@@ -85,7 +114,11 @@ export default ({
     {/* 작성자가 올린 이미지 파일 */}
     <Files>
       {files &&
-        files.map(file => <File key={file.id} id={file.id} src={file.url} />)}
+        files.map((file, index) => (
+          // showing속성은 이미지를 보여주는 것
+          //현재 보고 있는 파일을 보여줬다 안보여줬다하면서 넘기게 만듬
+          <File key={file.id} src={file.url} showing={index === currentItem} />
+        ))}
     </Files>
     <Meta>
       {/* 버튼 */}
@@ -97,8 +130,11 @@ export default ({
           <Comment />
         </Button>
       </Buttons>
+      {/* 좋아요 수 텍스트 */}
       <FatText text={likeCount === 1 ? "1 like" : `${likeCount} likes`} />
       <Timestamp>{createdAt}</Timestamp>
+      {/* 텍스트를 쓸 수 있는 공간(TextAutoSize) */}
+      <Textarea placeholder={"Add a comment..."} {...newComment} />
     </Meta>
   </Post>
 );

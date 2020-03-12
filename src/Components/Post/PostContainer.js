@@ -1,5 +1,5 @@
 //게시글 값 설정
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import useInput from "../../Hooks/useInput";
 import PostPresenter from "./PostPresenter";
@@ -19,8 +19,32 @@ const PostContainer = ({
   const [isLikedS, setIsLiked] = useState(isLiked);
   //좋아요 수를 가져옴
   const [likeCountS, setLikeCount] = useState(likeCount);
+  //현재 보고있는 이미지
+  const [currentItem, setCurrentItem] = useState(0);
+
   //댓글 적는 칸에 onChange를 부착
   const comment = useInput("");
+
+  //이미지를 3초마다 넘겨주는 것
+  const slide = () => {
+    //현재 보고 있는 파일이 마지막 이미지면
+    if (currentItem === files.length - 1) {
+      //3초 후에 첫번째 파일로 돌아감
+      setTimeout(() => setCurrentItem(0), 3000);
+      //현재 보고 있는 파일이 마지막 이미지가 아니면
+    } else {
+      //3초 후에 다음 이미지를 보여줌
+      setTimeout(() => setCurrentItem(currentItem + 1), 3000);
+    }
+  };
+
+  //componentDidMount, componentDidUpdate 등이 생길때 실행
+  useEffect(() => {
+    slide();
+    //currentItem이 바뀔 때마다 실행
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentItem]);
+
   return (
     <PostPresenter
       user={user} //게시글을 작성한 유저
@@ -34,6 +58,7 @@ const PostContainer = ({
       newComment={comment} //입력한 댓글
       setIsLiked={setIsLiked} //좋아요 했는지를 바꿀 수 있는 함수
       setLikeCount={setLikeCount} //좋아요 수를 바꿀 수 있는 함수
+      currentItem={currentItem} //현재 보고있는 이미지
     />
   );
 };
