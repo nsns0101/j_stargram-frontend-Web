@@ -1,5 +1,6 @@
 //로그인 폼
 import React from "react";
+import Helmet from "react-helmet";
 import styled from "styled-components";
 import Input from "../../Components/Input";
 import Button from "../../Components/Button";
@@ -70,32 +71,47 @@ export default ({
       <Form>
         {/* 현재 로그인 폼이면 */}
         {action === "login" && (
-          <form onSubmit={onSubmit}>
-            {/* Input함수에 placeholder값 + 여러 값들을 넣어서 함수실행 (Input.js 참고) */}
-            <Input placeholder={"Email"} {...email} type="email" />
-            <Button text={"Log in"} />
-          </form>
+          <>
+            <Helmet>
+              <title>Login | j_stargram</title>
+            </Helmet>
+            <form onSubmit={onSubmit}>
+              {/* Input함수에 placeholder값 + 여러 값들을 넣어서 함수실행 (Input.js 참고) */}
+              <Input placeholder={"Email"} {...email} type="email" />
+              <Button text={"Log in"} />
+            </form>
+          </>
         )}
 
         {/* 현재 회원가입 폼이면(밑의 상태체인저 참고) */}
         {action === "signUp" && (
-          <form onSubmit={onSubmit}>
-            {/* Input함수에 placeholder값 넣어서 함수실행 (Input.js 참고) */}
-            <Input placeholder={"First name"} {...firstName} />
-            <Input placeholder={"Last name"} {...lastName} />
-            <Input placeholder={"Email"} {...email} type="email" />
-            <Input placeholder={"Username"} {...username} />
-            <Button text={"Sign up"} />
-          </form>
+          <>
+            <Helmet>
+              <title>SignUp | j_stargram</title>
+            </Helmet>
+            <form onSubmit={onSubmit}>
+              {/* Input함수에 placeholder값 넣어서 함수실행 (Input.js 참고) */}
+              <Input placeholder={"First name"} {...firstName} />
+              <Input placeholder={"Last name"} {...lastName} />
+              <Input placeholder={"Email"} {...email} type="email" />
+              <Input placeholder={"Username"} {...username} />
+              <Button text={"Sign up"} />
+            </form>
+          </>
         )}
 
         {/* 로그인 성공했으면  */}
         {action === "confirm" && (
-          //이메일로 보내진 secret값을 입력하는 창이 만들어짐
-          <form onSubmit={onSubmit}>
-            <Input placeholder="Paste your secret" required {...secret} />
-            <Button text={"Confirm"} />
-          </form>
+          <>
+            <Helmet>
+              <title>Confirm Secret | j_stargram</title>
+            </Helmet>
+            {/* 이메일로 보내진 secret값을 입력하는 창이 만들어짐 */}
+            <form onSubmit={onSubmit}>
+              <Input placeholder="Paste your secret" required {...secret} />
+              <Button text={"Confirm"} />
+            </form>
+          </>
         )}
       </Form>
       {/* confirm입력 창이 아니고 */}

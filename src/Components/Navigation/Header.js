@@ -7,6 +7,8 @@ import useInput from "../../Hooks/useInput";
 import { Compass, HeartEmpty, User, Logo } from "../Icons";
 import { useQuery } from "react-apollo-hooks";
 
+//z-index는 수직 위치를 정하는 것
+//z-index를 주지 않으면 헤더위에 로딩이 표시될 수 있음
 const Header = styled.header`
   width: 100%;
   border: 0;
@@ -20,6 +22,7 @@ const Header = styled.header`
   justify-content: center;
   align-items: center;
   padding: 25px 0px;
+  z-index: 2;
 `;
 
 const HeaderWrapper = styled.div`
