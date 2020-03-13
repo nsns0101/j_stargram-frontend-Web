@@ -69,6 +69,17 @@ const PostContainer = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentItem]);
 
+  //키 입력 이벤트 함수
+  const onKeyPress = event => {
+    //keyCode 13은 Enter
+    if (event.keyCode === 13) {
+      //엔터를 치면 입력창에 쓴 댓글의 값을 초기화
+      //setValue는 useInput으로 선언된 값들을 초기화 할 수 있는 함수
+      comment.setValue("");
+    }
+    return;
+  };
+
   return (
     <PostPresenter
       user={user} //게시글을 작성한 유저
@@ -84,6 +95,7 @@ const PostContainer = ({
       setLikeCount={setLikeCount} //좋아요 수를 바꿀 수 있는 함수
       currentItem={currentItem} //현재 보고있는 이미지
       toggleLike={toggleLike} //좋아요를 토글 시키는 함수
+      onKeyPress={onKeyPress} //키 입력 이벤트 함수
     />
   );
 };

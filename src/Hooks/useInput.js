@@ -12,5 +12,5 @@ export default defaultValue => {
     setValue(value);
   };
   //userInput으로 값을 초기화하면 그 값 + onChange함수가 달려서 리턴됨
-  return { value, onChange };
+  return { value, onChange, setValue };
 };

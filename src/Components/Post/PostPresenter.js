@@ -4,7 +4,7 @@ import styled from "styled-components";
 import TextareaAutosize from "react-autosize-textarea"; //다음줄로 넘어가면 textarea는 스크롤이 생기지만 이 것은 창이 커짐
 import FatText from "../FatText";
 import Avatar from "../Avatar";
-import { HeartFull, HeartEmpty, Comment } from "../Icons";
+import { HeartFull, HeartEmpty, Comment as CommentIcon } from "../Icons";
 
 const Post = styled.div`
   ${props => props.theme.whiteBox};
@@ -89,6 +89,16 @@ const Textarea = styled(TextareaAutosize)`
     outline: none;
   }
 `;
+const Comments = styled.ul`
+  margin-top: 10px;
+`;
+
+const Comment = styled.li`
+  margin-bottom: 7px;
+  span {
+    margin-right: 5px;
+  }
+`;
 
 export default ({
   user: { username, avatar },
@@ -99,7 +109,9 @@ export default ({
   newComment,
   currentItem,
   createdAt,
-  toggleLike
+  toggleLike,
+  onKeyPress,
+  comments
 }) => (
   <Post>
     {/* 게시글 작성자의 정보 */}
@@ -132,14 +144,32 @@ export default ({
         </Button>
         {/* 댓글 버튼 */}
         <Button>
-          <Comment />
+          <CommentIcon />
         </Button>
       </Buttons>
       {/* 좋아요 수 텍스트 */}
       <FatText text={likeCount === 1 ? "1 like" : `${likeCount} likes`} />
+      {/* 댓글들 출력 */}
+      {comments && (
+        <Comments>
+          {comments.map(comment => (
+            <Comment key={comment.id}>
+              {/* 댓글 작성자 */}
+              <FatText text={comment.user.username} />
+              {/* 댓글 내용 */}
+              {comment.text}
+            </Comment>
+          ))}
+        </Comments>
+      )}
       <Timestamp>{createdAt}</Timestamp>
       {/* 텍스트를 쓸 수 있는 공간(TextAutoSize) */}
-      <Textarea placeholder={"Add a comment..."} {...newComment} />
+      <Textarea
+        placeholder={"Add a comment..."}
+        value={newComment.value}
+        onChange={newComment.onChange}
+        onKeyUp={onKeyPress}
+      />
     </Meta>
   </Post>
 );
