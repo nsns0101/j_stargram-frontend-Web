@@ -5,7 +5,7 @@ import { Route, Switch } from "react-router-dom";
 import Auth from "../Routes/Auth/index.js";
 import Feed from "../Routes/Feed/Feed";
 import Explore from "../Routes/Explore";
-import Search from "../Routes/Search";
+import Search from "../Routes/Search/index";
 import Profile from "../Routes/Profile";
 
 //로그인 상태
