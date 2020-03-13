@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { Link, withRouter } from "react-router-dom";
-import { gql } from "apollo-boost";
 import Input from "../Input";
 import useInput from "../../Hooks/useInput";
 import { Compass, HeartEmpty, User, Logo } from "../Icons";
 import { useQuery } from "react-apollo-hooks";
+import { SEE_MY_PROFILE } from "../../SharedQueries";
 
 //z-index는 수직 위치를 정하는 것
 //z-index를 주지 않으면 헤더위에 로딩이 표시될 수 있음
@@ -62,15 +62,6 @@ const SearchInput = styled(Input)`
 const HeaderLink = styled(Link)`
   &:not(:last-child) {
     margin-right: 30px;
-  }
-`;
-
-//내정보 보기 쿼리
-const SEE_MY_PROFILE = gql`
-  {
-    seeMyProfile {
-      username
-    }
   }
 `;
 
