@@ -5,6 +5,7 @@ import useInput from "../../Hooks/useInput";
 import PostPresenter from "./PostPresenter";
 import { useMutation } from "react-apollo-hooks";
 import { TOGGLE_LIKE, ADD_COMMENT } from "./PostQueries";
+import { toast } from "react-toastify";
 
 const PostContainer = ({
   id,
@@ -18,12 +19,13 @@ const PostContainer = ({
   createdAt
 }) => {
   //좋아요했는지의 값들을 가져옴
-  console.log(comments);
   const [isLikedS, setIsLiked] = useState(isLiked);
   //좋아요 수를 가져옴
   const [likeCountS, setLikeCount] = useState(likeCount);
   //현재 보고있는 이미지
   const [currentItem, setCurrentItem] = useState(0);
+  //내 댓글
+  const [selfComments, setSelfComments] = useState([]);
 
   //댓글 적는 칸에 onChange를 부착
   const comment = useInput("");
@@ -73,18 +75,24 @@ const PostContainer = ({
     slide();
     //currentItem이 바뀔 때마다 실행
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentItem, comments]);
+  }, [currentItem]);
 
   //키 입력 이벤트 함수
-  const onKeyPress = event => {
-    //keyCode 13은 Enter
-    if (event.keyCode === 13) {
-      //엔터를 치면 입력창에 쓴 댓글의 값을 초기화
-      //setValue는 useInput으로 선언된 값들을 초기화 할 수 있는 함수
-      comment.setValue("");
-      addCommentMutation();
+  const onKeyPress = async event => {
+    //event.which는 어떤 키가 눌렸는지 알려줌 (13은 enter)
+    if (event.which === 13) {
+      event.preventDefault();
+      try {
+        const {
+          data: { addComment }
+        } = await addCommentMutation();
+        setSelfComments([...selfComments, addComment]);
+        comment.setValue("");
+      } catch {
+        //댓글 작성 오류
+        toast.error("Cant send comment");
+      }
     }
-    return;
   };
 
   return (
@@ -103,6 +111,7 @@ const PostContainer = ({
       currentItem={currentItem} //현재 보고있는 이미지
       toggleLike={toggleLike} //좋아요를 토글 시키는 함수
       onKeyPress={onKeyPress} //키 입력 이벤트 함수
+      selfComments={selfComments} //
     />
   );
 };

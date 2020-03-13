@@ -111,7 +111,8 @@ export default ({
   createdAt,
   toggleLike,
   onKeyPress,
-  comments
+  comments,
+  selfComments
 }) => (
   <Post>
     {/* 게시글 작성자의 정보 */}
@@ -160,6 +161,13 @@ export default ({
               {comment.text}
             </Comment>
           ))}
+          {/* 내가 입력한 댓글 출력 */}
+          {selfComments.map(comment => (
+            <Comment key={comment.id}>
+              <FatText text={comment.user.username} />
+              {comment.text}
+            </Comment>
+          ))}
         </Comments>
       )}
       <Timestamp>{createdAt}</Timestamp>
@@ -169,7 +177,7 @@ export default ({
         value={newComment.value}
         onChange={newComment.onChange}
         //키 이벤트를 가지고 있음
-        onKeyUp={onKeyPress}
+        onKeyPress={onKeyPress}
       />
     </Meta>
   </Post>
