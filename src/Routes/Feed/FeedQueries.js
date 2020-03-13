@@ -25,6 +25,7 @@ export const FEED_QUERY = gql`
         user {
           id
           username
+          avatar
         }
       }
       createdAt

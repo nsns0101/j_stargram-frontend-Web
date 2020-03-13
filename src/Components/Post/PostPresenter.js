@@ -155,6 +155,7 @@ export default ({
         <Comments>
           {comments.map(comment => (
             <Comment key={comment.id}>
+              <Avatar size="sm" url={comment.user.avatar} />
               {/* 댓글 작성자 */}
               <FatText text={comment.user.username} />
               {/* 댓글 내용 */}
@@ -164,6 +165,7 @@ export default ({
           {/* 내가 입력한 댓글 출력 */}
           {selfComments.map(comment => (
             <Comment key={comment.id}>
+              <Avatar size="sm" url={comment.user.avatar} />
               <FatText text={comment.user.username} />
               {comment.text}
             </Comment>
