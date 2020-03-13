@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import useInput from "../../Hooks/useInput";
 import PostPresenter from "./PostPresenter";
 import { useMutation } from "react-apollo-hooks";
-import { TOGGLE_LIKE } from "./PostQueries";
+import { TOGGLE_LIKE, ADD_COMMENT } from "./PostQueries";
 
 const PostContainer = ({
   id,
@@ -18,6 +18,7 @@ const PostContainer = ({
   createdAt
 }) => {
   //좋아요했는지의 값들을 가져옴
+  console.log(comments);
   const [isLikedS, setIsLiked] = useState(isLiked);
   //좋아요 수를 가져옴
   const [likeCountS, setLikeCount] = useState(likeCount);
@@ -30,6 +31,11 @@ const PostContainer = ({
   //좋아요 토글
   const [toggleLikeMutation] = useMutation(TOGGLE_LIKE, {
     variables: { postId: id }
+  });
+
+  //댓글 추가
+  const [addCommentMutation] = useMutation(ADD_COMMENT, {
+    variables: { postId: id, text: comment.value }
   });
 
   //좋아요 토글 함수
@@ -67,7 +73,7 @@ const PostContainer = ({
     slide();
     //currentItem이 바뀔 때마다 실행
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentItem]);
+  }, [currentItem, comments]);
 
   //키 입력 이벤트 함수
   const onKeyPress = event => {
@@ -76,6 +82,7 @@ const PostContainer = ({
       //엔터를 치면 입력창에 쓴 댓글의 값을 초기화
       //setValue는 useInput으로 선언된 값들을 초기화 할 수 있는 함수
       comment.setValue("");
+      addCommentMutation();
     }
     return;
   };

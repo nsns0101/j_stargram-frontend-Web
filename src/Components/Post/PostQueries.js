@@ -7,3 +7,16 @@ export const TOGGLE_LIKE = gql`
     toggleLike(postId: $postId)
   }
 `;
+
+//댓글 추가
+export const ADD_COMMENT = gql`
+  mutation addComment($postId: String!, $text: String!) {
+    addComment(postId: $postId, text: $text) {
+      id
+      text
+      user {
+        username
+      }
+    }
+  }
+`;

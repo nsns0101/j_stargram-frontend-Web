@@ -168,6 +168,7 @@ export default ({
         placeholder={"Add a comment..."}
         value={newComment.value}
         onChange={newComment.onChange}
+        //키 이벤트를 가지고 있음
         onKeyUp={onKeyPress}
       />
     </Meta>
