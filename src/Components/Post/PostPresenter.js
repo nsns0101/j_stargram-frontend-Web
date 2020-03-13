@@ -10,6 +10,7 @@ const Post = styled.div`
   ${props => props.theme.whiteBox};
   width: 100%;
   max-width: 600px;
+  user-select: none;
   margin-bottom: 25px;
 `;
 
@@ -97,7 +98,8 @@ export default ({
   likeCount,
   newComment,
   currentItem,
-  createdAt
+  createdAt,
+  toggleLike
 }) => (
   <Post>
     {/* 게시글 작성자의 정보 */}
@@ -123,8 +125,11 @@ export default ({
     <Meta>
       {/* 버튼 */}
       <Buttons>
-        {/* 좋아요 버튼 */}
-        <Button>{isLiked ? <HeartFull /> : <HeartEmpty />}</Button>
+        {/* 좋아요 버튼 (누를시 토글) */}
+        <Button onClick={toggleLike}>
+          {/* 좋아요를 체크한 경우 색이 칠해져 있는 하트 아닌 경우 빈 하트 아이콘 */}
+          {isLiked ? <HeartFull /> : <HeartEmpty />}
+        </Button>
         {/* 댓글 버튼 */}
         <Button>
           <Comment />

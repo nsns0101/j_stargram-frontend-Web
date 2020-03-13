@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import useInput from "../../Hooks/useInput";
 import PostPresenter from "./PostPresenter";
+import { useMutation } from "react-apollo-hooks";
+import { TOGGLE_LIKE } from "./PostQueries";
 
 const PostContainer = ({
   id,
@@ -24,6 +26,28 @@ const PostContainer = ({
 
   //댓글 적는 칸에 onChange를 부착
   const comment = useInput("");
+
+  //좋아요 토글
+  const [toggleLikeMutation] = useMutation(TOGGLE_LIKE, {
+    variables: { postId: id }
+  });
+
+  //좋아요 토글 함수
+  const toggleLike = () => {
+    toggleLikeMutation(); //좋아요를 토글 시켜줌
+    //isLikedS값도 토글(-)
+    if (isLikedS === true) {
+      setIsLiked(false);
+      //좋아요 수도 차감
+      setLikeCount(likeCountS - 1);
+    }
+    //토글(+)
+    else {
+      setIsLiked(true);
+      //좋아요 수도 상승
+      setLikeCount(likeCountS + 1);
+    }
+  };
 
   //이미지를 3초마다 넘겨주는 것
   const slide = () => {
@@ -59,6 +83,7 @@ const PostContainer = ({
       setIsLiked={setIsLiked} //좋아요 했는지를 바꿀 수 있는 함수
       setLikeCount={setLikeCount} //좋아요 수를 바꿀 수 있는 함수
       currentItem={currentItem} //현재 보고있는 이미지
+      toggleLike={toggleLike} //좋아요를 토글 시키는 함수
     />
   );
 };
