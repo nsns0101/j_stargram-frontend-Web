@@ -31,7 +31,9 @@ const Container = styled.div`
   border-radius:50%;
 `;
 //아바타 기본 사이즈은 sm
-const Avatar = ({ size = "sm", url }) => <Container size={size} url={url} />;
+const Avatar = ({ size = "sm", url, className }) => (
+  <Container className={className} size={size} url={url} />
+);
 
 //유효성검사
 Avatar.propTypes = {

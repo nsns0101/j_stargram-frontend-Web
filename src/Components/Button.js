@@ -14,6 +14,7 @@ const Container = styled.button`
   text-align: center;
   padding: 7px 0px;
   font-size: 14px;
+  cursor: pointer;
 `;
 
 //Button함수에 인자로 text받은 값이 있으면 그 값을 Container태그의 value로 주기
